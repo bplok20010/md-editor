@@ -1857,9 +1857,9 @@ Attacklab.wmdBase = function(){
 		
 			// If there are no registered preview and output panels
 			// there is nothing to do.
-			if (!wmd.panels.preview && !wmd.panels.output) {
-				return;
-			}
+			//if (!wmd.panels.preview && !wmd.panels.output) {
+				//return;
+			//}
 			
 			var text = wmd.panels.input.value;
 			if (text && text == oldInputText) {
@@ -1888,7 +1888,10 @@ Attacklab.wmdBase = function(){
 				cb(oldInputText, text);	
 			}
 			
-			pushPreviewHtml(text);
+			if( wmd.panels.preview ) {
+				pushPreviewHtml(text);
+			}
+			
 			htmlOut = text;
 		};
 		
@@ -2421,12 +2424,14 @@ if(!Attacklab.wmd)
 		var strVar = "";
 		var opts = opts || {};
 		var defaultValue = opts.defaultValue || '';
-		strVar += "<div id=\"wmd-editor-"+uuid+"\" class=\"wmd-panel editor liveMode\">\n";
+		strVar += "<div id=\"wmd-editor-"+uuid+"\" class=\"wmd-panel editor liveMode\" style=\"width:100%;height:100%;\">\n";
 		strVar += "			<div id=\"wmd-button-bar-"+uuid+"\" class=\"editor-toolbar\"><\/div>\n";
-		strVar += "            <div class=\"wmd\">\n";
+		strVar += "            <div class=\"wmd\" style=\"width:"+ (opts.enablePreview ? '50' : '100') +"%; height: 100%;\">\n";
 		strVar += "			<textarea id=\"wmd-input-"+uuid+"\" class=\"mono form-control wmd-input tabIndent\" >"+defaultValue+"<\/textarea>\n";
 		strVar += "            <\/div>\n";
-		strVar += "            <div id=\"wmd-preview-"+uuid+"\" class=\"wmd-panel editor-preview fmt\"><\/div>\n";
+		if( opts.enablePreview ) {
+			strVar += "            <div id=\"wmd-preview-"+uuid+"\" class=\"wmd-panel editor-preview fmt\"><\/div>\n";
+		}
 		strVar += "		<\/div>\n";
 		
 		elm.innerHTML = strVar;
