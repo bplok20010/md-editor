@@ -1,3 +1,4 @@
+var topObj = window;
 var Attacklab = {};
 Attacklab.showdown = {
 	converter : function(){
@@ -13,10 +14,10 @@ var Attacklab = Attacklab || {};
 Attacklab.wmdBase = function(){
 
 	// A few handy aliases for readability.
-	var wmd  = top.Attacklab;
-	var doc  = top.document;
-	var re   = top.RegExp;
-	var nav  = top.navigator;
+	var wmd  = topObj.Attacklab;
+	var doc  = topObj.document;
+	var re   = topObj.RegExp;
+	var nav  = topObj.navigator;
 	
 	// Some namespaces.
 	wmd.Util = {};
@@ -392,7 +393,7 @@ Attacklab.wmdBase = function(){
 		
 		// Why is this in a zero-length timeout?
 		// Is it working around a browser bug?
-		top.setTimeout(function(){
+		topObj.setTimeout(function(){
 		
 			createDialog();
 
@@ -529,11 +530,11 @@ Attacklab.wmdBase = function(){
 		// Set how often we poll the textarea for changes.
 		var assignInterval = function(){
 			// previewPollInterval is set at the top of the namespace.
-			killHandle = top.setInterval(doTickCallback, interval);
+			killHandle = topObj.setInterval(doTickCallback, interval);
 		};
 		
 		this.destroy = function(){
-			top.clearInterval(killHandle);
+			topObj.clearInterval(killHandle);
 		};
 		
 		assignInterval();
@@ -563,7 +564,7 @@ Attacklab.wmdBase = function(){
 			}
 			
 			if (!global.isIE || mode != "moving") {
-				timer = top.setTimeout(refreshState, 1);
+				timer = topObj.setTimeout(refreshState, 1);
 			}
 			else {
 				inputStateObj = null;
@@ -579,7 +580,7 @@ Attacklab.wmdBase = function(){
 		this.setCommandMode = function(){
 			mode = "command";
 			saveState();
-			timer = top.setTimeout(refreshState, 0);
+			timer = topObj.setTimeout(refreshState, 0);
 		};
 		
 		this.canUndo = function(){
@@ -694,8 +695,8 @@ Attacklab.wmdBase = function(){
 				if (event.preventDefault) {
 					event.preventDefault();
 				}
-				if (top.event) {
-					top.event.returnValue = false;
+				if (topObj.event) {
+					topObj.event.returnValue = false;
 				}
 				return;
 			}
@@ -1188,8 +1189,8 @@ Attacklab.wmdBase = function(){
 						key.preventDefault();
 					}
 					
-					if (top.event) {
-						top.event.returnValue = false;
+					if (topObj.event) {
+						topObj.event.returnValue = false;
 					}
 				}
 			});
@@ -1245,7 +1246,7 @@ Attacklab.wmdBase = function(){
 			if (!/markdown/.test(wmd.wmd_env.output.toLowerCase())) {
 				if (markdownConverter) {
 					inputBox.value = markdownConverter.makeHtml(text);
-					top.setTimeout(callback, 0);
+					topObj.setTimeout(callback, 0);
 				}
 			}
 			return true;
@@ -1280,7 +1281,7 @@ Attacklab.wmdBase = function(){
 			if (inputBox) {
 				inputBox.style.marginTop = "";
 			}
-			top.clearInterval(creationHandle);
+			topObj.clearInterval(creationHandle);
 		};
 		
 		init();
@@ -1770,7 +1771,7 @@ Attacklab.wmdBase = function(){
 		wmd.wmd.previewManager = wmd.previewManager;
 	};
 	
-	util.startEditor = function(uuid, panels){
+	util.startEditor = function(uuid, panels, opts){
 	
 		if (wmd.wmd_env.autostart === false) {
 			util.makeAPI();
@@ -1785,7 +1786,11 @@ Attacklab.wmdBase = function(){
 		
 			wmd.panels = panels || new wmd.PanelCollection();
 			
-			previewMgr = new wmd.previewManager();
+			previewMgr = new wmd.previewManager(function(a, b){
+				if( opts && opts.onChange ) {
+					opts.onChange(a, b);
+				}	
+			});
 			var previewRefreshCallback = previewMgr.refresh;
 						
 			edit = new wmd.editor(previewRefreshCallback, uuid);
@@ -1804,7 +1809,7 @@ Attacklab.wmdBase = function(){
 		return edit;
 	};
 	
-	wmd.previewManager = function(){
+	wmd.previewManager = function(cb){
 		
 		var managerObj = this;
 		var converter;
@@ -1833,8 +1838,8 @@ Attacklab.wmdBase = function(){
 		
 			var result = 0;
 			
-			if (top.innerHeight) {
-				result = top.pageYOffset;
+			if (topObj.innerHeight) {
+				result = topObj.pageYOffset;
 			}
 			else 
 				if (doc.documentElement && doc.documentElement.scrollTop) {
@@ -1879,6 +1884,10 @@ Attacklab.wmdBase = function(){
 			var currTime = new Date().getTime();
 			elapsedTime = currTime - prevTime;
 			
+			if(cb) {
+				cb(oldInputText, text);	
+			}
+			
 			pushPreviewHtml(text);
 			htmlOut = text;
 		};
@@ -1887,7 +1896,7 @@ Attacklab.wmdBase = function(){
 		var applyTimeout = function(){
 		
 			if (timeout) {
-				top.clearTimeout(timeout);
+				topObj.clearTimeout(timeout);
 				timeout = undefined;
 			}
 			
@@ -1902,7 +1911,7 @@ Attacklab.wmdBase = function(){
 				if (delay > maxDelay) {
 					delay = maxDelay;
 				}
-				timeout = top.setTimeout(makePreviewHtml, delay);
+				timeout = topObj.setTimeout(makePreviewHtml, delay);
 			}
 		};
 		
@@ -1988,12 +1997,12 @@ Attacklab.wmdBase = function(){
 			var fullTop = position.getTop(wmd.panels.input) - getDocScrollTop();
 			
 			if (global.isIE) {
-				top.setTimeout(function(){
-					top.scrollBy(0, fullTop - emptyTop);
+				topObj.setTimeout(function(){
+					topObj.scrollBy(0, fullTop - emptyTop);
 				}, 0);
 			}
 			else {
-				top.scrollBy(0, fullTop - emptyTop);
+				topObj.scrollBy(0, fullTop - emptyTop);
 			}
 		};
 		
@@ -2393,7 +2402,7 @@ if(!Attacklab.wmd)
 			
 			mergeEnv(Attacklab.wmd_defaults);
 			mergeEnv(Attacklab.account_options);
-			mergeEnv(top["wmd_options"]);
+			mergeEnv(topObj["wmd_options"]);
 			Attacklab.full = true;
 			
 			var defaultButtons = "bold italic link blockquote code image ol ul heading hr";
@@ -2405,15 +2414,17 @@ if(!Attacklab.wmd)
 	
 	Attacklab.wmd();
 	Attacklab.wmdBase();
-	Attacklab.Editor = function(elm){
+	Attacklab.Editor = function(elm, opts){
 		var uuid = Attacklab.Editor.uuid++;
 		var doc = document;
 		this.uuid = uuid;
 		var strVar = "";
+		var opts = opts || {};
+		var defaultValue = opts.defaultValue || '';
 		strVar += "<div id=\"wmd-editor-"+uuid+"\" class=\"wmd-panel editor liveMode\">\n";
 		strVar += "			<div id=\"wmd-button-bar-"+uuid+"\" class=\"editor-toolbar\"><\/div>\n";
 		strVar += "            <div class=\"wmd\">\n";
-		strVar += "			<textarea id=\"wmd-input-"+uuid+"\" class=\"mono form-control wmd-input tabIndent\" ><\/textarea>\n";
+		strVar += "			<textarea id=\"wmd-input-"+uuid+"\" class=\"mono form-control wmd-input tabIndent\" >"+defaultValue+"<\/textarea>\n";
 		strVar += "            <\/div>\n";
 		strVar += "            <div id=\"wmd-preview-"+uuid+"\" class=\"wmd-panel editor-preview fmt\"><\/div>\n";
 		strVar += "		<\/div>\n";
@@ -2427,7 +2438,7 @@ if(!Attacklab.wmd)
 			input : doc.getElementById("wmd-input-" + uuid)
 		};
 		
-		this.editor = Attacklab.Util.startEditor(uuid,this.panels);	
+		this.editor = Attacklab.Util.startEditor(uuid,this.panels, opts);	
 	}
 	Attacklab.Editor.uuid = 1;
 	
