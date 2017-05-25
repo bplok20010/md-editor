@@ -1,3 +1,1 @@
-This repository is no longer maintained.
-
-Please use PageDown instead.
+基于wmd修改的类似segmentfault编辑器
