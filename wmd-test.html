@@ -4,26 +4,17 @@
 
 	<head>
 		<title>Test WMD Page</title>
-		<link rel="stylesheet" href="//static.segmentfault.com/v-5924f5b0/global/css/global.css"/>
+		<link rel="stylesheet" href="css/wmd.css"/>
 		
 		<script type="text/javascript" src="Parser.js"></script>
 		<script type="text/javascript" src="wmd.js"></script>
-
 	</head>
 	
 	<body style="padding:10px;">
-		<!--<div id="wmd-editor" class="wmd-panel editor liveMode">
-			<div id="wmd-button-bar" class="editor-toolbar"></div>
-            <div class="wmd">
-			<textarea id="wmd-input" class="mono form-control wmd-input tabIndent" ></textarea>
-            </div>
-            <div id="wmd-preview" class="wmd-panel editor-preview fmt"></div>
-		</div>-->
         
         <div id="myEditor">
         
         </div>
-		
         
         <script>
 		//Dialog.js
@@ -34,8 +25,11 @@
 			}	
 		}
 		</script>
+
         <script>
+		
 		var editor = new Attacklab.Editor(myEditor);
+		
 		</script>
         
 	</body>

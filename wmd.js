@@ -2424,6 +2424,8 @@ if(!Attacklab.wmd)
 		var strVar = "";
 		var opts = opts || {};
 		var defaultValue = opts.defaultValue || '';
+		opts.enablePreview = opts.enablePreview === undefined ? true : opts.enablePreview;
+		
 		strVar += "<div id=\"wmd-editor-"+uuid+"\" class=\"wmd-panel editor liveMode\" style=\"width:100%;height:100%;\">\n";
 		strVar += "			<div id=\"wmd-button-bar-"+uuid+"\" class=\"editor-toolbar\"><\/div>\n";
 		strVar += "            <div class=\"wmd\" style=\"width:"+ (opts.enablePreview ? '50' : '100') +"%; height: 100%;\">\n";
